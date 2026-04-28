@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>MoonBet - Install App</title>
+  <title>MoonBet</title>
 
   <!-- PWA -->
   <link rel="manifest" href="/manifest.json" />
@@ -19,8 +19,8 @@
 </head>
 <body>
 
-  <!-- ── Main Page ─────────────────────────────────────────── -->
-  <div class="container">
+  <!-- ── Install Page (browser only) ──────────────────────── -->
+  <div class="container" id="installPage">
 
     <div class="hero">
       <span class="logo">🌙</span>
@@ -72,6 +72,46 @@
       <div class="feature"><span>📱</span><p>Native Feel</p></div>
     </div>
 
+  </div>
+
+  <!-- ── Welcome Page (PWA only) ───────────────────────────── -->
+  <div class="welcome-screen" id="welcomePage">
+    <div class="welcome-bg-glow"></div>
+
+    <div class="welcome-top">
+      <span class="welcome-logo">🌙</span>
+      <h1 class="welcome-title">MoonBet</h1>
+      <p class="welcome-tag">Welcome back!</p>
+    </div>
+
+    <div class="welcome-card">
+      <div class="welcome-card-icon">🎯</div>
+      <div class="welcome-card-text">
+        <strong>Ready to Play</strong>
+        <span>Your app is installed &amp; running</span>
+      </div>
+    </div>
+
+    <div class="welcome-stats">
+      <div class="stat">
+        <span class="stat-val">Live</span>
+        <span class="stat-label">Status</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-val" id="notifStatus">Off</span>
+        <span class="stat-label">Notifications</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat">
+        <span class="stat-val">PWA</span>
+        <span class="stat-label">Mode</span>
+      </div>
+    </div>
+
+    <button class="welcome-notif-btn" id="welcomeNotifBtn">
+      🔔 Enable Notifications
+    </button>
   </div>
 
   <!-- ── iOS Modal ──────────────────────────────────────────── -->

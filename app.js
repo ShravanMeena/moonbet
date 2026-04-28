@@ -14,11 +14,36 @@ function showToast(msg, duration = 3000) {
 function openModal(id) { document.getElementById(id).classList.add('active'); }
 function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-// Close modal when clicking backdrop
 document.querySelectorAll('.modal-overlay').forEach(overlay => {
   overlay.addEventListener('click', e => {
     if (e.target === overlay) overlay.classList.remove('active');
   });
+});
+
+// ─── Page Switch: Install vs Welcome ────────────────────────
+function showWelcomePage() {
+  document.getElementById('installPage').style.display = 'none';
+  const wp = document.getElementById('welcomePage');
+  wp.classList.add('visible');
+
+  // Update notification status badge
+  if (Notification.permission === 'granted') {
+    document.getElementById('notifStatus').textContent = 'On';
+    const btn = document.getElementById('welcomeNotifBtn');
+    btn.textContent = '✅ Notifications Enabled';
+    btn.classList.add('enabled');
+  }
+}
+
+function showInstallPage() {
+  document.getElementById('welcomePage').classList.remove('visible');
+  document.getElementById('installPage').style.display = '';
+}
+
+window.addEventListener('load', () => {
+  if (isInstalled()) {
+    showWelcomePage();
+  }
 });
 
 // ─── Capture Android Install Prompt ─────────────────────────
@@ -44,11 +69,6 @@ document.getElementById('closeIosModal').addEventListener('click', () => closeMo
 
 // ─── Android Button ──────────────────────────────────────────
 document.getElementById('androidBtn').addEventListener('click', async () => {
-  if (isInstalled()) {
-    showToast('App is already installed!');
-    return;
-  }
-
   if (deferredPrompt) {
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
@@ -75,6 +95,18 @@ document.getElementById('skipNotifBtn').addEventListener('click', () => {
 document.getElementById('allowNotifBtn').addEventListener('click', async () => {
   closeModal('notifModal');
   await subscribeToNotifications();
+});
+
+// Welcome screen notification button
+document.getElementById('welcomeNotifBtn').addEventListener('click', async () => {
+  if (Notification.permission === 'granted') return;
+  await subscribeToNotifications();
+  if (Notification.permission === 'granted') {
+    document.getElementById('notifStatus').textContent = 'On';
+    const btn = document.getElementById('welcomeNotifBtn');
+    btn.textContent = '✅ Notifications Enabled';
+    btn.classList.add('enabled');
+  }
 });
 
 // ─── Push Notifications ──────────────────────────────────────
@@ -131,6 +163,6 @@ if (isInstalled()) {
   window.addEventListener('load', () => {
     setTimeout(() => {
       if (Notification.permission === 'default') openModal('notifModal');
-    }, 1500);
+    }, 2000);
   });
 }
