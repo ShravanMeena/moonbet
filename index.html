@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>MoonBet - Install App</title>
+
+  <!-- PWA -->
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#6c63ff" />
+
+  <!-- iOS PWA meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="MoonBet" />
+  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── Main Page ─────────────────────────────────────────── -->
+  <div class="container">
+
+    <div class="hero">
+      <span class="logo">🌙</span>
+      <h1>MoonBet</h1>
+      <p class="subtitle">Install our app for the best experience</p>
+    </div>
+
+    <div class="buttons">
+
+      <!-- iOS Button -->
+      <button class="btn btn-ios" id="iosBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53
+                   0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39
+                   c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07
+                   3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02
+                   2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83
+                   1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83
+                   1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        <div class="btn-label">
+          Install on iOS
+          <span>Safari required</span>
+        </div>
+      </button>
+
+      <!-- Android Button -->
+      <button class="btn btn-android" id="androidBtn">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="30" height="30">
+          <path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88
+                   3.24C14.86 8.33 13.46 8 12 8s-2.86.33-4.47.91L5.65 5.67c-.19-.28-.54-.37
+                   -.83-.22-.3.16-.42.54-.26.85L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22
+                   c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25S6.31
+                   12.75 7 12.75s1.25.56 1.25 1.25S7.69 15.25 7 15.25zm10 0c-.69
+                   0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25
+                   1.25z"/>
+        </svg>
+        <div class="btn-label">
+          Install on Android
+          <span>Chrome required</span>
+        </div>
+      </button>
+
+    </div>
+
+    <div class="features">
+      <div class="feature"><span>⚡</span><p>Fast &amp; Offline</p></div>
+      <div class="feature"><span>🔔</span><p>Notifications</p></div>
+      <div class="feature"><span>📱</span><p>Native Feel</p></div>
+    </div>
+
+  </div>
+
+  <!-- ── iOS Modal ──────────────────────────────────────────── -->
+  <div class="modal-overlay" id="iosModal">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <button class="modal-close" id="closeIosModal">✕</button>
+      <h2>Install on iOS</h2>
+      <p class="modal-subtitle">Follow these steps in Safari browser</p>
+
+      <div class="steps">
+
+        <div class="step">
+          <div class="step-num">1</div>
+          <div class="step-content">
+            <strong>Open in Safari</strong>
+            <p>This page must be opened in the Safari browser on your iPhone or iPad.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">2</div>
+          <div class="step-content">
+            <strong>Tap the Share button</strong>
+            <p>Tap the <span class="share-badge">⬆ Share</span> button at the bottom of Safari.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">3</div>
+          <div class="step-content">
+            <strong>Add to Home Screen</strong>
+            <p>Scroll down in the share menu and tap <strong>"Add to Home Screen"</strong>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="step-num">4</div>
+          <div class="step-content">
+            <strong>Tap Add</strong>
+            <p>Confirm by tapping <strong>"Add"</strong> in the top right corner. Done!</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ios-note" id="iosSafariWarning" style="display:none;">
+        ⚠️ Please open this page in <strong>Safari</strong> to install the app on iOS.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Android Modal ──────────────────────────────────────── -->
+  <div class="modal-overlay" id="androidModal">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <button class="modal-close" id="closeAndroidModal">✕</button>
+      <div class="android-modal-content">
+        <div class="big-icon">🤖</div>
+        <h2>Install on Android</h2>
+        <p>Open this page in <strong>Chrome</strong> on your Android device. Chrome will automatically show an install banner or prompt.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Notification Modal ────────────────────────────────── -->
+  <div class="modal-overlay" id="notifModal">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <button class="modal-close" id="closeNotifModal">✕</button>
+      <div class="notif-content">
+        <div class="notif-icon">🔔</div>
+        <h2>Enable Notifications</h2>
+        <p>Stay updated with live alerts, exclusive offers, and important updates delivered directly to your device.</p>
+        <button class="btn-primary" id="allowNotifBtn">Allow Notifications</button>
+        <button class="btn-secondary" id="skipNotifBtn">Maybe Later</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Toast ─────────────────────────────────────────────── -->
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
