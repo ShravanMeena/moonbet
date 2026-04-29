@@ -1,153 +1,88 @@
-const { createCanvas } = require('canvas');
+const sharp = require('sharp');
 const fs = require('fs');
 
-function drawMoonIcon(canvas) {
-  const ctx = canvas.getContext('2d');
-  const s = canvas.width;
+// Moon + Stars SVG — matches the yellow moon icon
+function moonSVG(size) {
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 100 100">
+  <!-- Background -->
+  <rect width="100" height="100" fill="#13103a"/>
 
-  // Background — dark purple
-  const bg = ctx.createLinearGradient(0, 0, s, s);
-  bg.addColorStop(0, '#1a1040');
-  bg.addColorStop(1, '#0a0820');
-  ctx.fillStyle = bg;
-  ctx.roundRect(0, 0, s, s, s * 0.22);
-  ctx.fill();
+  <!-- Moon body -->
+  <circle cx="46" cy="54" r="28" fill="#FFCC00"/>
 
-  const cx = s * 0.5;
-  const cy = s * 0.52;
+  <!-- Cut-out to make crescent -->
+  <circle cx="55" cy="51" r="21" fill="#13103a"/>
 
-  // ── Crescent moon ──────────────────────────────────────────
-  const moonR  = s * 0.30;
-  const cutR   = s * 0.235;
-  const cutOffX = s * 0.10;
-  const cutOffY = s * -0.04;
+  <!-- Big star (top-left) -->
+  <polygon points="22,22 25.5,32 36,32 27.5,38 30.5,48 22,42 13.5,48 16.5,38 8,32 18.5,32"
+    fill="#FFCC00"/>
 
-  // Moon fill (gold gradient)
-  const moonGrad = ctx.createRadialGradient(
-    cx - moonR * 0.2, cy - moonR * 0.2, moonR * 0.1,
-    cx, cy, moonR
-  );
-  moonGrad.addColorStop(0, '#FFE566');
-  moonGrad.addColorStop(0.5, '#FFCC00');
-  moonGrad.addColorStop(1, '#E6A800');
+  <!-- Small star (top-right) -->
+  <polygon points="64,16 66.3,22.5 73,22.5 67.5,26.5 69.8,33 64,29 58.2,33 60.5,26.5 55,22.5 61.7,22.5"
+    fill="#FFCC00"/>
+</svg>`;
+}
 
-  // Right shading for 3D effect
-  ctx.save();
-  ctx.beginPath();
-  ctx.arc(cx, cy, moonR, 0, Math.PI * 2);
-  ctx.fillStyle = moonGrad;
-  ctx.fill();
+function splashSVG(width, height) {
+  const iconSize = Math.round(Math.min(width, height) * 0.26);
+  const ix = Math.round((width - iconSize) / 2);
+  const iy = Math.round(height / 2 - iconSize * 0.7);
+  const fontSize = Math.round(iconSize * 0.28);
+  const textY = Math.round(iy + iconSize + fontSize * 1.1);
 
-  // Cut-out to make crescent
-  ctx.beginPath();
-  ctx.arc(cx + cutOffX, cy + cutOffY, cutR, 0, Math.PI * 2);
-  ctx.fillStyle = '#0d0820';
-  ctx.fill();
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+  <rect width="${width}" height="${height}" fill="#13103a"/>
+  <!-- Icon group -->
+  <g transform="translate(${ix}, ${iy})">
+    <rect width="${iconSize}" height="${iconSize}" rx="${iconSize*0.18}" fill="#1e1650"/>
+    <circle cx="${iconSize*0.46}" cy="${iconSize*0.54}" r="${iconSize*0.28}" fill="#FFCC00"/>
+    <circle cx="${iconSize*0.55}" cy="${iconSize*0.51}" r="${iconSize*0.21}" fill="#1e1650"/>
+    <polygon points="${star5(iconSize*0.22, iconSize*0.22, iconSize*0.092, iconSize*0.038)}" fill="#FFCC00"/>
+    <polygon points="${star5(iconSize*0.64, iconSize*0.16, iconSize*0.060, iconSize*0.025)}" fill="#FFCC00"/>
+  </g>
+  <text x="${width/2}" y="${textY}" font-family="Arial" font-size="${fontSize}" font-weight="800"
+    fill="white" text-anchor="middle">MoonBet</text>
+</svg>`;
+}
 
-  // Right-edge shadow for depth
-  ctx.beginPath();
-  ctx.arc(cx, cy, moonR, 0, Math.PI * 2);
-  const shadowGrad = ctx.createLinearGradient(cx - moonR, cy, cx + moonR, cy);
-  shadowGrad.addColorStop(0, 'transparent');
-  shadowGrad.addColorStop(0.7, 'transparent');
-  shadowGrad.addColorStop(1, 'rgba(180,100,0,0.35)');
-  ctx.fillStyle = shadowGrad;
-  ctx.fill();
-
-  // Cut-out again (clean)
-  ctx.beginPath();
-  ctx.arc(cx + cutOffX, cy + cutOffY, cutR, 0, Math.PI * 2);
-  ctx.fillStyle = '#0d0820';
-  ctx.fill();
-  ctx.restore();
-
-  // ── Stars ─────────────────────────────────────────────────
-  function drawStar(x, y, r, color1, color2) {
-    const grad = ctx.createRadialGradient(x - r*0.2, y - r*0.2, r*0.05, x, y, r);
-    grad.addColorStop(0, color1);
-    grad.addColorStop(1, color2);
-
-    ctx.save();
-    ctx.translate(x, y);
-    ctx.beginPath();
-    for (let i = 0; i < 5; i++) {
-      const outerAngle = (i * 4 * Math.PI) / 5 - Math.PI / 2;
-      const innerAngle = outerAngle + (2 * Math.PI) / 10;
-      if (i === 0) ctx.moveTo(Math.cos(outerAngle) * r, Math.sin(outerAngle) * r);
-      else ctx.lineTo(Math.cos(outerAngle) * r, Math.sin(outerAngle) * r);
-      ctx.lineTo(Math.cos(innerAngle) * r * 0.42, Math.sin(innerAngle) * r * 0.42);
-    }
-    ctx.closePath();
-    ctx.fillStyle = grad;
-    ctx.fill();
-    ctx.restore();
+function star5(cx, cy, r, ir) {
+  let pts = '';
+  for (let i = 0; i < 5; i++) {
+    const oa = (i * 4 * Math.PI / 5) - Math.PI / 2;
+    const ia = oa + Math.PI / 5;
+    pts += `${(cx + Math.cos(oa)*r).toFixed(1)},${(cy + Math.sin(oa)*r).toFixed(1)} `;
+    pts += `${(cx + Math.cos(ia)*ir).toFixed(1)},${(cy + Math.sin(ia)*ir).toFixed(1)} `;
   }
-
-  // Big star (top-left of moon)
-  drawStar(cx - moonR * 0.55, cy - moonR * 0.62, s * 0.095, '#FFE566', '#FFAA00');
-  // Small star (top-right)
-  drawStar(cx + moonR * 0.28, cy - moonR * 0.78, s * 0.062, '#FFE566', '#FFAA00');
+  return pts.trim();
 }
 
-function generateIcon(size) {
-  const canvas = createCanvas(size, size);
-  drawMoonIcon(canvas);
-  return canvas.toBuffer('image/png');
+async function run() {
+  if (!fs.existsSync('icons'))  fs.mkdirSync('icons');
+  if (!fs.existsSync('splash')) fs.mkdirSync('splash');
+
+  // App icons
+  for (const size of [180, 192, 512]) {
+    await sharp(Buffer.from(moonSVG(size)))
+      .png()
+      .toFile(`icons/icon-${size}.png`);
+  }
+  // moon.png alias
+  await sharp(Buffer.from(moonSVG(512))).png().toFile('icons/moon.png');
+  console.log('Icons generated: icon-180, icon-192, icon-512, moon.png');
+
+  // iOS splash screens
+  const splashes = [
+    [640,  1136, 'iphone-se'],
+    [750,  1334, 'iphone-8'],
+    [1125, 2436, 'iphone-x'],
+    [1170, 2532, 'iphone-12'],
+    [1284, 2778, 'iphone-12-max'],
+    [828,  1792,  'iphone-xr'],
+  ];
+  for (const [w, h, name] of splashes) {
+    await sharp(Buffer.from(splashSVG(w, h))).png().toFile(`splash/${name}.png`);
+  }
+  console.log('Splash screens generated');
 }
 
-function generateSplash(width, height) {
-  const canvas = createCanvas(width, height);
-  const ctx = canvas.getContext('2d');
-
-  // Background
-  const bg = ctx.createLinearGradient(0, 0, 0, height);
-  bg.addColorStop(0, '#1a1040');
-  bg.addColorStop(1, '#0a0820');
-  ctx.fillStyle = bg;
-  ctx.fillRect(0, 0, width, height);
-
-  // Glow
-  const glow = ctx.createRadialGradient(width/2, height/2, 0, width/2, height/2, width*0.4);
-  glow.addColorStop(0, 'rgba(108,99,255,0.18)');
-  glow.addColorStop(1, 'transparent');
-  ctx.fillStyle = glow;
-  ctx.fillRect(0, 0, width, height);
-
-  // Centered icon
-  const iconSize = Math.min(width, height) * 0.28;
-  const iconCanvas = createCanvas(iconSize, iconSize);
-  drawMoonIcon(iconCanvas);
-  ctx.drawImage(iconCanvas, (width - iconSize) / 2, height / 2 - iconSize * 0.65, iconSize, iconSize);
-
-  // App name
-  ctx.fillStyle = '#ffffff';
-  ctx.font = `700 ${iconSize * 0.35}px -apple-system, BlinkMacSystemFont, sans-serif`;
-  ctx.textAlign = 'center';
-  ctx.textBaseline = 'middle';
-  ctx.fillText('MoonBet', width / 2, height / 2 + iconSize * 0.55);
-
-  return canvas.toBuffer('image/png');
-}
-
-if (!fs.existsSync('icons')) fs.mkdirSync('icons');
-if (!fs.existsSync('splash')) fs.mkdirSync('splash');
-
-// App icons
-fs.writeFileSync('icons/icon-192.png', generateIcon(192));
-fs.writeFileSync('icons/icon-512.png', generateIcon(512));
-fs.writeFileSync('icons/icon-180.png', generateIcon(180)); // iOS apple-touch-icon
-console.log('Icons generated');
-
-// iOS splash screens (key sizes)
-const splashes = [
-  [640,  1136, 'iphone-se'],
-  [750,  1334, 'iphone-8'],
-  [1125, 2436, 'iphone-x'],
-  [1170, 2532, 'iphone-12'],
-  [1284, 2778, 'iphone-12-max'],
-  [828,  1792, 'iphone-xr'],
-];
-splashes.forEach(([w, h, name]) => {
-  fs.writeFileSync(`splash/${name}.png`, generateSplash(w, h));
-});
-console.log('Splash screens generated');
+run().catch(console.error);
