@@ -13,11 +13,27 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="MoonBet" />
-  <link rel="apple-touch-icon" href="/icons/icon-192.png" />
+  <link rel="apple-touch-icon" href="/icons/icon-180.png" />
+
+  <!-- iOS Splash Screens -->
+  <link rel="apple-touch-startup-image" media="(device-width:320px) and (device-height:568px) and (-webkit-device-pixel-ratio:2)" href="/splash/iphone-se.png" />
+  <link rel="apple-touch-startup-image" media="(device-width:375px) and (device-height:667px) and (-webkit-device-pixel-ratio:2)" href="/splash/iphone-8.png" />
+  <link rel="apple-touch-startup-image" media="(device-width:375px) and (device-height:812px) and (-webkit-device-pixel-ratio:3)" href="/splash/iphone-x.png" />
+  <link rel="apple-touch-startup-image" media="(device-width:390px) and (device-height:844px) and (-webkit-device-pixel-ratio:3)" href="/splash/iphone-12.png" />
+  <link rel="apple-touch-startup-image" media="(device-width:414px) and (device-height:896px) and (-webkit-device-pixel-ratio:2)" href="/splash/iphone-xr.png" />
+  <link rel="apple-touch-startup-image" media="(device-width:428px) and (device-height:926px) and (-webkit-device-pixel-ratio:3)" href="/splash/iphone-12-max.png" />
 
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+
+  <!-- ── App Splash / Loading Screen ──────────────────────── -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="splash-glow"></div>
+    <img src="/icons/icon-512.png" class="splash-icon" alt="MoonBet" />
+    <div class="splash-name">MoonBet</div>
+    <div class="splash-loader"><div class="splash-loader-bar"></div></div>
+  </div>
 
   <!-- ── Install Page (browser only) ──────────────────────── -->
   <div class="container" id="installPage">
@@ -116,50 +132,73 @@
 
   <!-- ── iOS Modal ──────────────────────────────────────────── -->
   <div class="modal-overlay" id="iosModal">
-    <div class="modal">
+    <div class="modal ios-modal">
       <div class="modal-handle"></div>
       <button class="modal-close" id="closeIosModal">✕</button>
-      <h2>Install on iOS</h2>
-      <p class="modal-subtitle">Follow these steps in Safari browser</p>
 
-      <div class="steps">
+      <!-- App preview header -->
+      <div class="ios-app-preview">
+        <div class="ios-app-icon">🌙</div>
+        <div class="ios-app-info">
+          <strong>MoonBet</strong>
+          <span>moonbet.com</span>
+        </div>
+        <div class="ios-free-badge">FREE</div>
+      </div>
 
-        <div class="step">
-          <div class="step-num">1</div>
-          <div class="step-content">
-            <strong>Open in Safari</strong>
-            <p>This page must be opened in the Safari browser on your iPhone or iPad.</p>
+      <div class="ios-modal-title">Add to Home Screen</div>
+      <p class="ios-modal-sub">Follow these 3 quick steps in Safari</p>
+
+      <!-- Step cards -->
+      <div class="ios-steps">
+
+        <div class="ios-step-card">
+          <div class="ios-step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8"/>
+              <polyline points="16 6 12 2 8 6"/>
+              <line x1="12" y1="2" x2="12" y2="15"/>
+            </svg>
           </div>
+          <div class="ios-step-text">
+            <strong>Tap Share</strong>
+            <span>Bottom bar mein share icon dabao</span>
+          </div>
+          <div class="ios-step-num">1</div>
         </div>
 
-        <div class="step">
-          <div class="step-num">2</div>
-          <div class="step-content">
-            <strong>Tap the Share button</strong>
-            <p>Tap the <span class="share-badge">⬆ Share</span> button at the bottom of Safari.</p>
+        <div class="ios-step-card">
+          <div class="ios-step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <rect x="3" y="3" width="18" height="18" rx="3"/>
+              <line x1="12" y1="8" x2="12" y2="16"/>
+              <line x1="8" y1="12" x2="16" y2="12"/>
+            </svg>
           </div>
-        </div>
-
-        <div class="step">
-          <div class="step-num">3</div>
-          <div class="step-content">
+          <div class="ios-step-text">
             <strong>Add to Home Screen</strong>
-            <p>Scroll down in the share menu and tap <strong>"Add to Home Screen"</strong>.</p>
+            <span>Menu mein scroll karke select karo</span>
           </div>
+          <div class="ios-step-num">2</div>
         </div>
 
-        <div class="step">
-          <div class="step-num">4</div>
-          <div class="step-content">
-            <strong>Tap Add</strong>
-            <p>Confirm by tapping <strong>"Add"</strong> in the top right corner. Done!</p>
+        <div class="ios-step-card">
+          <div class="ios-step-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+              <polyline points="20 6 9 17 4 12"/>
+            </svg>
           </div>
+          <div class="ios-step-text">
+            <strong>Tap Add</strong>
+            <span>Top right mein "Add" confirm karo</span>
+          </div>
+          <div class="ios-step-num">3</div>
         </div>
 
       </div>
 
       <div class="ios-note" id="iosSafariWarning" style="display:none;">
-        ⚠️ Please open this page in <strong>Safari</strong> to install the app on iOS.
+        ⚠️ Safari mein open karo — Chrome/Firefox pe install nahi hoga
       </div>
     </div>
   </div>

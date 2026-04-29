@@ -20,6 +20,13 @@ document.querySelectorAll('.modal-overlay').forEach(overlay => {
   });
 });
 
+// ─── Splash Screen ───────────────────────────────────────────
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.getElementById('splashScreen').classList.add('hide');
+  }, 1400);
+});
+
 // ─── Page Switch: Install vs Welcome ────────────────────────
 function showWelcomePage() {
   document.getElementById('installPage').style.display = 'none';

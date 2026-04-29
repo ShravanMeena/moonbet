@@ -1,12 +1,19 @@
-const CACHE_NAME = 'moonbet-v1';
+const CACHE_NAME = 'moonbet-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
   '/style.css',
   '/app.js',
   '/manifest.json',
+  '/icons/icon-180.png',
   '/icons/icon-192.png',
-  '/icons/icon-512.png'
+  '/icons/icon-512.png',
+  '/splash/iphone-se.png',
+  '/splash/iphone-8.png',
+  '/splash/iphone-x.png',
+  '/splash/iphone-12.png',
+  '/splash/iphone-12-max.png',
+  '/splash/iphone-xr.png'
 ];
 
 // Install — cache all static assets

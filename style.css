@@ -200,47 +200,123 @@ h1 {
 .modal h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
 .modal-subtitle { color: rgba(255,255,255,0.45); font-size: 13px; margin-bottom: 24px; }
 
-/* ── Steps (iOS guide) ──────────────────────────────────────── */
-.steps { display: flex; flex-direction: column; gap: 18px; }
+/* ── iOS Modal (new design) ─────────────────────────────────── */
+.ios-modal { padding: 24px 20px 44px; }
 
-.step { display: flex; align-items: flex-start; gap: 14px; text-align: left; }
+.ios-app-preview {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.09);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 22px;
+}
 
-.step-num {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #6c63ff, #c5a3ff);
+.ios-app-icon {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #1a1a3e, #0a0a1a);
+  border-radius: 13px;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 28px;
+  flex-shrink: 0;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+.ios-app-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1;
+}
+.ios-app-info strong { font-size: 16px; font-weight: 700; }
+.ios-app-info span   { font-size: 12px; color: rgba(255,255,255,0.4); }
+
+.ios-free-badge {
+  background: rgba(61,220,132,0.15);
+  border: 1px solid rgba(61,220,132,0.35);
+  color: #3ddc84;
+  font-size: 11px;
   font-weight: 700;
-  font-size: 15px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.5px;
+}
+
+.ios-modal-title {
+  font-size: 20px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.ios-modal-sub {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 20px;
+}
+
+/* Step cards */
+.ios-steps { display: flex; flex-direction: column; gap: 10px; }
+
+.ios-step-card {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 14px 16px;
+  transition: background 0.2s;
+}
+.ios-step-card:hover { background: rgba(255,255,255,0.07); }
+
+.ios-step-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #6c63ff, #a78bfa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: white;
+}
+
+.ios-step-text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+.ios-step-text strong { font-size: 14px; font-weight: 700; }
+.ios-step-text span   { font-size: 12px; color: rgba(255,255,255,0.42); line-height: 1.4; }
+
+.ios-step-num {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.45);
+  font-size: 11px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   flex-shrink: 0;
 }
 
-.step-content strong { display: block; font-size: 15px; margin-bottom: 2px; }
-.step-content p { color: rgba(255,255,255,0.5); font-size: 12.5px; line-height: 1.5; }
-
-.share-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-  background: #007AFF;
-  color: white;
-  padding: 1px 7px;
-  border-radius: 6px;
-  font-size: 12px;
-  vertical-align: middle;
-}
-
 .ios-note {
-  margin-top: 20px;
-  background: rgba(255, 195, 0, 0.1);
-  border: 1px solid rgba(255, 195, 0, 0.3);
+  margin-top: 14px;
+  background: rgba(255, 195, 0, 0.08);
+  border: 1px solid rgba(255, 195, 0, 0.25);
   border-radius: 12px;
-  padding: 12px 16px;
+  padding: 11px 14px;
   color: #ffd700;
-  font-size: 13px;
+  font-size: 12.5px;
 }
 
 /* ── Android modal ──────────────────────────────────────────── */
@@ -330,6 +406,79 @@ h1 {
   h1 { font-size: 34px; }
   .logo { font-size: 60px; }
   .features { gap: 20px; }
+}
+
+/* ── Splash / Loading Screen ────────────────────────────────── */
+.splash-screen {
+  position: fixed;
+  inset: 0;
+  background: linear-gradient(160deg, #1a1040 0%, #0a0820 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  gap: 16px;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.splash-screen.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.splash-glow {
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, rgba(255,200,0,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.splash-icon {
+  width: 110px;
+  height: 110px;
+  border-radius: 26px;
+  animation: splashPop 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 12px 40px rgba(255,180,0,0.25);
+}
+
+@keyframes splashPop {
+  from { transform: scale(0.5); opacity: 0; }
+  to   { transform: scale(1);   opacity: 1; }
+}
+
+.splash-name {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  background: linear-gradient(135deg, #FFE566, #FFCC00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: splashPop 0.6s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.splash-loader {
+  width: 120px;
+  height: 3px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+
+.splash-loader-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #FFCC00, #FFE566);
+  border-radius: 2px;
+  animation: splashLoad 1.2s ease forwards;
+}
+
+@keyframes splashLoad {
+  from { width: 0%; }
+  to   { width: 100%; }
 }
 
 /* ── Welcome Screen (PWA mode) ──────────────────────────────── */
