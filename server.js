@@ -8,7 +8,14 @@ const fs       = require('fs');
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname)));
+
+// Serve icons and splash (always)
+app.use('/icons',  express.static(path.join(__dirname, 'icons')));
+app.use('/splash', express.static(path.join(__dirname, 'splash')));
+
+// Serve React build in production, root dir in dev
+const isProd = process.env.NODE_ENV === 'production';
+app.use(express.static(path.join(__dirname, isProd ? 'dist' : '.')));
 
 // ── VAPID setup ──────────────────────────────────────────────
 const VAPID_PUBLIC_KEY  = process.env.VAPID_PUBLIC_KEY;
